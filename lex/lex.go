@@ -66,12 +66,20 @@ func GetToken(i input.Input) int {
 	}
 
 	if lastChar == '#' {
-		i.ReadLine()
+		if !i.ReadLine() {
+			return TokenEof
+		}
 		return GetToken(i)
 	}
+	if lastChar == '\n' || lastChar == '\r' {
+		if !i.ReadLine() {
+			return TokenEof
+		}
+		return GetToken(i)
+	}
+
 	if err == input.EOF {
 		return TokenEof
 	}
-	lastChar, _ = i.GetChar()
 	return lastChar
 }

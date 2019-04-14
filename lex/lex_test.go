@@ -56,4 +56,20 @@ func TestRex(t *testing.T) {
 			t.Fatal("token should be a TokenIdentifier")
 		}
 	}
+	{
+		i := input.NewStdin(bytes.NewBufferString("+"))
+		i.ReadLine()
+		r := GetToken(i)
+		if r != '+' {
+			t.Fatal("token should be a +")
+		}
+	}
+	{
+		i := input.NewStdin(bytes.NewBufferString("#zakozako\n\n+"))
+		i.ReadLine()
+		r := GetToken(i)
+		if r == '+' {
+			t.Fatal("Empty Line is not allowed!")
+		}
+	}
 }
