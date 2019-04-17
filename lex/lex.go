@@ -16,11 +16,11 @@ const (
 )
 
 var NumVal float64
+var IdentifierStr string
 
 func GetToken(i input.Input) int {
 	var lastChar int
 	lastChar = ' '
-	identifiedChar := ""
 	var err error
 
 	for {
@@ -30,18 +30,18 @@ func GetToken(i input.Input) int {
 		lastChar, err = i.GetChar()
 	}
 	if u.IsAlpha(lastChar) {
-		identifiedChar = string(lastChar)
+		IdentifierStr = string(lastChar)
 		for {
 			lastChar, err = i.GetChar()
 			if u.IsAlphaOrNum(lastChar) {
-				identifiedChar += string(lastChar)
+				IdentifierStr += string(lastChar)
 				continue
 			}
 			break
 		}
-		if identifiedChar == "def" {
+		if IdentifierStr == "def" {
 			return TokenDef
-		} else if identifiedChar == "extern" {
+		} else if IdentifierStr == "extern" {
 			return TokenExtern
 		}
 		return TokenIdentifier
@@ -66,15 +66,11 @@ func GetToken(i input.Input) int {
 	}
 
 	if lastChar == '#' {
-		if !i.ReadLine() {
-			return TokenEof
-		}
+		i.ReadLine()
 		return GetToken(i)
 	}
 	if lastChar == '\n' || lastChar == '\r' {
-		if !i.ReadLine() {
-			return TokenEof
-		}
+		i.ReadLine()
 		return GetToken(i)
 	}
 
